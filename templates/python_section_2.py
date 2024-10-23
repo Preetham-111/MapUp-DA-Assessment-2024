@@ -1,35 +1,56 @@
 import pandas as pd
 
 
-def calculate_distance_matrix(df)->pd.DataFrame():
-    """
-    Calculate a distance matrix based on the dataframe, df.
 
-    Args:
-        df (pandas.DataFrame)
+import pandas as pd
 
-    Returns:
-        pandas.DataFrame: Distance matrix
-    """
-    # Write your logic here
-
+def calculate_distance_matrix(file_path):
+    # Load the dataset
+    df = pd.read_csv(file_path, index_col=0)
+    
+    for i in range(df.shape[0]):
+        for j in range(i, df.shape[1]):
+            if i == j:
+                df.iloc[i, j] = 0  # Set diagonal values to 0
+            else:
+                # Symmetry: A to B should equal B to A
+                df.iloc[j, i] = df.iloc[i, j]
+    
     return df
 
+# Call the function with the dataset path
+distance_matrix = calculate_distance_matrix('C:\ \Users\\user\\Downloads\\dataset-2.csv')
 
-def unroll_distance_matrix(df)->pd.DataFrame():
-    """
-    Unroll a distance matrix to a DataFrame in the style of the initial dataset.
+# Display the result
+print(distance_matrix)
+-----------------------------------------
 
-    Args:
-        df (pandas.DataFrame)
 
-    Returns:
-        pandas.DataFrame: Unrolled DataFrame containing columns 'id_start', 'id_end', and 'distance'.
-    """
-    # Write your logic here
 
-    return df
+import pandas as pd
 
+def unroll_distance_matrix(df):
+    # Create a list to store the rows
+    data = []
+    
+    # Iterate over the rows and columns of the DataFrame
+    for id_start in df.index:
+        for id_end in df.columns:
+            if id_start != id_end:  # Skip diagonal values where id_start == id_end
+                data.append([id_start, id_end, df.loc[id_start, id_end]])
+    
+    # Convert the list to a DataFrame
+    unrolled_df = pd.DataFrame(data, columns=['id_start', 'id_end', 'distance'])
+    
+    return unrolled_df
+# Call the function with the dataset path
+
+unrolled_matrix = unroll_distance_matrix(distance_matrix) (' C:\ \Users\\user\\Downloads\\dataset-2.csv')                                   
+
+# Display the result
+print(unrolled_matrix)
+
+---------------------------
 
 def find_ids_within_ten_percentage_threshold(df, reference_id)->pd.DataFrame():
     """
@@ -47,7 +68,7 @@ def find_ids_within_ten_percentage_threshold(df, reference_id)->pd.DataFrame():
 
     return df
 
-
+----------------------------
 def calculate_toll_rate(df)->pd.DataFrame():
     """
     Calculate toll rates for each vehicle type based on the unrolled DataFrame.
@@ -61,18 +82,6 @@ def calculate_toll_rate(df)->pd.DataFrame():
     # Wrie your logic here
 
     return df
+----------------------------------------
 
 
-def calculate_time_based_toll_rates(df)->pd.DataFrame():
-    """
-    Calculate time-based toll rates for different time intervals within a day.
-
-    Args:
-        df (pandas.DataFrame)
-
-    Returns:
-        pandas.DataFrame
-    """
-    # Write your logic here
-
-    return df
